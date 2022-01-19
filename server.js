@@ -76,7 +76,7 @@ function validateAnimal(animal) {
     if (!animal.diet || typeof animal.diet !== 'string') {
         return false;
     }
-    if (!animal.personalityTraits || typeof animal.personalityTraits !== 'string') {
+    if (!animal.personalityTraits || !Array.isArray(animal.personalityTraits)) {
         return false;
     }
     return true;
@@ -104,7 +104,7 @@ app.get('/api/animals/:id', (req, res) => {
 app.post('/api/animals', (req, res) => {
     // set id based on what the next index of the array will be
     req.body.id = animals.length.toString();
-    if (!validateAnimal(req.body)) {
+    if (validateAnimal(req.body) == false) {
         res.status(400).send('The animal is not properly formatted.');
     } else{
         const animal = createNewAnimal(req.body, animals);
