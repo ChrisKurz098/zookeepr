@@ -1,4 +1,5 @@
 const express = require('express');
+const { send } = require('express/lib/response');
 const res = require('express/lib/response');
 const fs = require('fs');
 const path = require('path');
@@ -7,6 +8,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 // parse incoming JSON data
 app.use(express.json());
+
+app.use(express.static('public'));
 
 const { animals } = require('./data/animals.json');
 
@@ -82,6 +85,18 @@ function validateAnimal(animal) {
     return true;
 };
 /////////////////get requests//////////////////////
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+});
+
+app.get('/animals', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/animals.html'));
+});
+
+app.get('/zookeepers', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/zookeepers.html'));
+});
+
 app.get('/api/animals', (req, res) => {
     let results = animals;
     if (req.query) {
@@ -100,13 +115,19 @@ app.get('/api/animals/:id', (req, res) => {
     }
 
 });
+
+
+//if anything other than above is requested...
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, './public/index.html'));
+  });
 ///////////////////post reqests/////////////////////
 app.post('/api/animals', (req, res) => {
     // set id based on what the next index of the array will be
     req.body.id = animals.length.toString();
     if (validateAnimal(req.body) == false) {
         res.status(400).send('The animal is not properly formatted.');
-    } else{
+    } else {
         const animal = createNewAnimal(req.body, animals);
         res.json(animal);
     }

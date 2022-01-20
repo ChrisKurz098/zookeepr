@@ -135,6 +135,25 @@
         "hungry"
       ],
       "id": "13"
+    },
+    {
+      "name": "Bingo",
+      "species": "Rat",
+      "diet": "omnivore",
+      "personalityTraits": [
+        "hungry"
+      ],
+      "id": "14"
+    },
+    {
+      "name": "Bongo",
+      "species": "Rat",
+      "diet": "omnivore",
+      "personalityTraits": [
+        "zany",
+        "anxious"
+      ],
+      "id": "15"
     }
   ]
 }
